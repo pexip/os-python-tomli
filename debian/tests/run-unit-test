@@ -1,0 +1,19 @@
+#!/bin/bash
+set -ex
+
+pkg=python3-tomli
+
+START="$(dirname "$(dirname "$(dirname "$(readlink -fm "$0")")")")"
+
+if [ "$AUTOPKGTEST_TMP" = "" ] ; then
+  AUTOPKGTEST_TMP=$(mktemp -d /tmp/${pkg}-test.XXXXXX)
+  trap "rm -rf $AUTOPKGTEST_TMP" 0 INT QUIT ABRT PIPE TERM
+fi
+
+cd "$AUTOPKGTEST_TMP"
+
+cp -r ${START}/tests ./
+cp -r ${START}/benchmark ./
+
+python3 -m pytest -n auto -k "not test_own_pyproject" --strict-markers \
+	--strict-config -o xfail_strict=true

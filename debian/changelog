@@ -1,0 +1,26 @@
+python-tomli (1.2.2-2~bpo11+1) bullseye-backports; urgency=medium
+
+  * Rebuild for bullseye-backports.
+
+ -- Stefano Rivera <stefanor@debian.org>  Wed, 19 Jan 2022 21:22:49 -0400
+
+python-tomli (1.2.2-2) unstable; urgency=medium
+
+  * Change binary package to be 'all', not 'any'.
+
+ -- Michael R. Crusoe <crusoe@debian.org>  Sun, 07 Nov 2021 16:59:16 +0100
+
+python-tomli (1.2.2-1) unstable; urgency=medium
+
+  * debian/rules: #969352 and #994281 are fixed, remove workarounds. Closes: #997534
+  * debian/watch: check the tags to find the latest version
+  * New upstream version
+  * Freshen debian/patches/flit_pre_3.2
+
+ -- Michael R. Crusoe <crusoe@debian.org>  Sun, 07 Nov 2021 16:14:07 +0100
+
+python-tomli (1.2.1-1) unstable; urgency=medium
+
+  * Initial release. (Closes: #994599)
+
+ -- Michael R. Crusoe <crusoe@debian.org>  Sat, 18 Sep 2021 13:16:18 +0200
