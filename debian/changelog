@@ -1,4 +1,4 @@
-python-tomli (1.2.2-2~bpo11+1pexip1) pexip; urgency=medium
+python-tomli (1.2.2-2~bpo11+1pexip1) pexip-bullseye; urgency=medium
 
   * Prepare Pexip packaging
 
