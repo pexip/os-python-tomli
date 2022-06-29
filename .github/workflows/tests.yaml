@@ -1,0 +1,112 @@
+name: Tests
+
+on:
+  push:
+    branches: [ master ]
+    tags: [ '[0-9]+.[0-9]+.[0-9]+*' ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  linters:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install pre-commit
+      run: |
+        pip install pre-commit
+
+    - name: run linters
+      # pre-commit also runs in pre-commit.ci, but let's have it here too
+      # to block `pypi-publish` job from triggering if pre-commit fails
+      run: |
+        pre-commit run -a
+
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: ['pypy-3.7', '3.6', '3.7', '3.8', '3.9', '3.10', '3.11-dev']
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    continue-on-error: ${{ matrix.python-version == '3.11-dev' }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install test deps
+      run: |
+        pip install -r tests/requirements.txt
+
+    - name: Test with pytest
+      run: |
+        # Use 'python -m pytest' to add CWD to sys.path
+        python -m pytest --cov --cov-fail-under=100
+
+    - name: Report coverage
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.6'
+      uses: codecov/codecov-action@v2
+
+  test-built-package:
+    runs-on: ubuntu-latest
+    # Allow this to fail. A failure is possible even if the package is working,
+    # because test dependencies may rely on a Tomli version incompatible with
+    # the current state.
+    continue-on-error: true
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.7'
+
+    - name: Install (deps and package)
+      run: |
+        pip install . -r tests/requirements.txt
+
+    - name: Test with pytest
+      run: |
+        pytest --import-mode=append
+
+  allgood:
+    runs-on: ubuntu-latest
+    needs:
+    - tests
+    - linters
+    steps:
+    - run: echo "Great success!"
+
+  pypi-publish:
+    # Only publish if all other jobs succeed
+    needs: [ allgood ]
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.7'
+    - name: Install build and publish tools
+      run: |
+        pip install build twine
+    - name: Build and check
+      run: |
+        rm -rf dist/ && python -m build
+        twine check --strict dist/*
+    - name: Publish
+      run: |
+        twine upload dist/*
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
