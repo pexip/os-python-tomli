@@ -7,10 +7,10 @@ Uploaders: Michael R. Crusoe <crusoe@debian.org>
 Build-Depends: debhelper-compat (= 13),
                dh-python,
                python3-all,
-               flit,
-               python3-dateutil,
-               python3-pytest-xdist
-Standards-Version: 4.6.0
+               flit (>= 3.2.0),
+               pybuild-plugin-pyproject,
+               python3-pytest-xdist <!nocheck>,
+Standards-Version: 4.6.1
 Vcs-Browser: https://salsa.debian.org/python-team/packages/python-tomli
 Vcs-Git: https://salsa.debian.org/python-team/packages/python-tomli.git
 Homepage: https://github.com/hukkin/tomli
