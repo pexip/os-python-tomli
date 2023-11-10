@@ -1,3 +1,21 @@
+python-tomli (2.0.1-2) unstable; urgency=medium
+
+  * Team upload.
+  * d/control: Build using the pyproject pybuild plugin.
+
+ -- Louis-Philippe Véronneau <pollo@debian.org>  Fri, 02 Dec 2022 12:58:37 -0500
+
+python-tomli (2.0.1-1) unstable; urgency=medium
+
+  * Team upload.
+  * debian/patches: Drop flit (<< 3.2.0) patch. (Closes: #1000665)
+  * New upstream version 2.0.1.
+  * Drop unused build-dep and test-build-dep: python3-dateutil.
+  * debian/control: Bump Standards-Version to 4.6.1.
+  * debian/docs: Install README.md.
+
+ -- Boyuan Yang <byang@debian.org>  Wed, 29 Jun 2022 14:34:38 -0400
+
 python-tomli (1.2.2-2~bpo11+1pexip2) pexip-bullseye; urgency=medium
 
   * Bullseye rebuild for ARM64 inclusion
@@ -9,12 +27,6 @@ python-tomli (1.2.2-2~bpo11+1pexip1) pexip-bullseye; urgency=medium
   * Prepare Pexip packaging
 
  -- Mark Hymers <mark.hymers@pexip.com>  Wed, 29 Jun 2022 21:15:43 +0100
-
-python-tomli (1.2.2-2~bpo11+1) bullseye-backports; urgency=medium
-
-  * Rebuild for bullseye-backports.
-
- -- Stefano Rivera <stefanor@debian.org>  Wed, 19 Jan 2022 21:22:49 -0400
 
 python-tomli (1.2.2-2) unstable; urgency=medium
 
