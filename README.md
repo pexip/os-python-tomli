@@ -67,7 +67,6 @@ with open("path_to_file/conf.toml", "rb") as f:
 The file must be opened in binary mode (with the `"rb"` flag).
 Binary mode will enforce decoding the file as UTF-8 with universal newlines disabled,
 both of which are required to correctly parse TOML.
-Support for text file objects is deprecated for removal in the next major release.
 
 ### Handle invalid TOML<a name="handle-invalid-toml"></a>
 
@@ -80,8 +79,8 @@ except tomli.TOMLDecodeError:
     print("Yep, definitely not valid.")
 ```
 
-Note that while the `TOMLDecodeError` type is public API, error messages of raised instances of it are not.
-Error messages should not be assumed to stay constant across Tomli versions.
+Note that error messages are considered informational only.
+They should not be assumed to stay constant across Tomli versions.
 
 ### Construct `decimal.Decimal`s from TOML floats<a name="construct-decimaldecimals-from-toml-floats"></a>
 
@@ -96,8 +95,8 @@ assert toml_dict["precision-matters"] == Decimal("0.982492")
 Note that `decimal.Decimal` can be replaced with another callable that converts a TOML float from string to a Python type.
 The `decimal.Decimal` is, however, a practical choice for use cases where float inaccuracies can not be tolerated.
 
-Illegal types include `dict`, `list`, and anything that has the `append` attribute.
-Parsing floats into an illegal type results in undefined behavior.
+Illegal types are `dict` and `list`, and their subtypes.
+A `ValueError` will be raised if `parse_float` produces illegal types.
 
 ## FAQ<a name="faq"></a>
 

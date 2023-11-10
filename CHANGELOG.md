@@ -1,8 +1,35 @@
 # Changelog
 
-## **unreleased**
+## 2.0.1
 
-- no changes yet
+- Improve
+  - Make bundling easier by using relative imports internally and adding license and copyright notice to source files.
+  - Make error messages more uniform
+  - Raise a friendly `TypeError` for wrong file mode
+  - Allow `parse_float` to return objects having the `append` attr
+  - Eagerly raise an error if `parse_float` returns an illegal type
+- Packaging
+  - Move from `pytest` testing framework to `unittest` and remove `python-dateutil` test dependency.
+    Tests now only require Python interpreter.
+
+## 1.2.3
+
+- Fixed
+  - Backport: Allow lower case "t" and "z" in datetimes
+
+## 2.0.0
+
+- Removed
+  - Python 3.6 support
+  - Support for text file objects as `load` input. Use binary file objects instead.
+  - First argument of `load` and `loads` can no longer be passed by keyword.
+- Fixed
+  - Allow lower case "t" and "z" in datetimes
+- Improved
+  - Raise an error when dotted keys define values outside the "current table".
+    Technically speaking TOML v1.0.0 does allow such assignments
+    but that isn't intended by specification writers,
+    and will change in a future specification version (see the [pull request](https://github.com/toml-lang/toml/pull/848)).
 
 ## 1.2.2
 
